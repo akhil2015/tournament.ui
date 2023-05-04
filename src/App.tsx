@@ -1,24 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import ActiveTable from "./components/Table/ActiveTable";
+import PastTable from "./components/Table/PastTable";
+import { fetchActiveTournaments } from "./contracts/tournament";
+import { useWeb3React } from "@web3-react/core";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 function App() {
+  const [liveTournaments, setLiveTournaments] = React.useState<any>([]);
+  const [pastTournaments, setPastTournaments] = React.useState<any>([]);
+  const [availableTournaments, setAvailableTournaments] = React.useState<any>(
+    []
+  );
+
+  const getData = async () => {
+    const provider = await detectEthereumProvider();
+    const { lobby, active, past } = await fetchActiveTournaments(provider);
+    setLiveTournaments(active);
+    setAvailableTournaments(lobby);
+    setPastTournaments(past);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <div>
+        <p className="text-3xl">Available Tournaments</p>
+        <ActiveTable data={availableTournaments} getData={getData}/>
+      </div>
+      <div>
+        <p className="text-3xl">Live Tournaments</p>
+        <PastTable data={liveTournaments}/>
+      </div>
+      <div>
+        <p className="text-3xl">Past Tournaments</p>
+        <PastTable data={pastTournaments}/>
+      </div>
     </div>
   );
 }
