@@ -24,7 +24,7 @@ const PastTable = ({ data }: Props) => {
               <td>
                 {item?.roster.length}/{item.maxPlayers}
               </td>
-              <td><button className="btn">Scores</button></td>
+              <td><label htmlFor="my-modal" className="btn">Scores</label></td>
             </tr>
           ))}
         </tbody>

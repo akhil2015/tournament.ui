@@ -6,6 +6,7 @@ import PastTable from "./components/Table/PastTable";
 import { fetchActiveTournaments } from "./contracts/tournament";
 import { useWeb3React } from "@web3-react/core";
 import detectEthereumProvider from "@metamask/detect-provider";
+import ScoreCard from "./components/ScoreCard";
 
 function App() {
   const [liveTournaments, setLiveTournaments] = React.useState<any>([]);
@@ -40,6 +41,7 @@ function App() {
         <p className="text-3xl">Past Tournaments</p>
         <PastTable data={pastTournaments}/>
       </div>
+      <ScoreCard/>
     </div>
   );
 }
